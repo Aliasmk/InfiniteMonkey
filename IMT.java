@@ -67,7 +67,7 @@ public class IMT {
     BufferedReader lr;
 	double percent = 0;
 	int wordsScanned = 0;
-	String confirmSound = "confirm2.s";
+	String confirmSound = "confirm.s";
     
     //global objects
     DateFormat df = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
