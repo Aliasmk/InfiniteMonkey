@@ -80,7 +80,7 @@ public class IMT {
     //This method will initialize the directories needed for the logs and start the clock
     public void checkStartUp() throws Exception
 	{
-        System.out.println("Welcome to SE1 version " +VERSION +".");
+        System.out.println("Welcome to IMT version " +VERSION +".");
 		
 		//attempt to find the dictionary file.
         //Filename is 2of12inf.dic and should be placed in the same directory 

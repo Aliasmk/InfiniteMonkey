@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 # Results Folder
 postInfo
 
+#Compile Run Batch File
+crun.bat
+
 # =========================
 # Operating System Files
 # =========================
