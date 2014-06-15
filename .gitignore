@@ -14,6 +14,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# Results Folder
+postInfo
+
 # =========================
 # Operating System Files
 # =========================
