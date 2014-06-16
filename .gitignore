@@ -15,10 +15,8 @@ $RECYCLE.BIN/
 *.msp
 
 # Results Folder
-postInfo
-
-#Compile Run Batch File
-crun.bat
+bin/postInfo
+src/postInfo
 
 # =========================
 # Operating System Files
