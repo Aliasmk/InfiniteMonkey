@@ -47,11 +47,13 @@ public class IMT {
     
 	final boolean PLAYSOUNDONFINISH = true; //play a sound on completion of processing
     
-	final boolean VERBOSEARRAY = false; //specify whether or not the randomly generated array appears on the terminal screen. Recommended: false
-    final boolean VERBOSEWORDS = false; //specify whether or not words are displayed on screen as they are discovered. Disabling shows a Percentage completion.
+	final boolean VERBOSEARRAY = true; //specify whether or not the randomly generated array appears on the terminal screen. Recommended: false
+    final boolean VERBOSEWORDS = true; //specify whether or not words are displayed on screen as they are discovered. Disabling shows a Percentage completion.
 	final boolean NOPERCENT = true; //if true, when VERBOSEWORDS = false, the percentage will not be shown, instead, a spinning wheel will show to indicate activity.
 	
 	final boolean NEWMETHOD = true; //specifies whether to use the v1.1 or the v1.2 method of scanning.
+	
+	final int MODE = 1; //0- Smart Method, 1- Random Non-shift Method, 2- Random Shift Method
 	
 	final String VERSION = "1.2"; //version number
     
@@ -134,9 +136,24 @@ public class IMT {
       
     //method to fill array with jibberish
     public void fillArray() {
-        String letters = "aeiouyaeiouyaeiouybcdfghijklmnpqrstvwxyz";
-        
-        
+        String letters = "";
+		int letterLength = 0;
+		
+		switch (MODE)
+		{
+			case 0:
+				letters = "aeiouyaeiouyaeiouybcdfghijklmnpqrstvwxyz";
+				letterLength = 40;
+				break;
+			case 1:
+				letters = "1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./` ";
+				letterLength = 48;
+				break;
+			case 2:
+				letters = "1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./`!@#$%^&*()_+~QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>? ";
+				letterLength = 97; //currently broken
+		}
+		
         int numberOfRows = PHRASES;
 
         //set number of rows in array
@@ -154,10 +171,10 @@ public class IMT {
             for (int col = 0; col < rowLength; col++) {
                 
                 int wordLength = (generator.nextInt(MAXWORDLETTERS-MINWORDLETTERS+1) + MINWORDLETTERS);
-                int firstChar = generator.nextInt(40);
+                int firstChar = generator.nextInt(letterLength);
                 phrase[col] = String.valueOf(letters.charAt(firstChar));
                 for (int character = 1; character < (wordLength); character++) {
-                    int randomChar = generator.nextInt(40);
+                    int randomChar = generator.nextInt(letterLength);
                     phrase[col] = (phrase[col]) + (String.valueOf(letters.charAt(randomChar)));
                 }
             }
@@ -193,16 +210,17 @@ public class IMT {
                     
                     reslogger.write(" " + allWords[row][col]);
                 }
-                int randomPunctuation = generator.nextInt(4);
                 
-                if(VERBOSEARRAY)
-                {
-                    System.out.print(String.valueOf(punctuation.charAt(randomPunctuation)));
-                    System.out.println();
-                }
-                
-                
-                reslogger.write(String.valueOf(punctuation.charAt(randomPunctuation)));
+				if(MODE == 0)
+				{
+					int randomPunctuation = generator.nextInt(4);
+					if(VERBOSEARRAY)
+					{
+						System.out.print(String.valueOf(punctuation.charAt(randomPunctuation)));
+						System.out.println();
+					}
+					reslogger.write(String.valueOf(punctuation.charAt(randomPunctuation)));
+				}
                 reslogger.write("\n");
             }
         } catch (Exception e) {
@@ -276,6 +294,7 @@ public class IMT {
 		System.out.println("\tPhrases: " +PHRASES);
 		System.out.println("\tMinimum Word Length: " +MINWORDLETTERS);
 		System.out.println("\tMaximum Word Length: " +MAXWORDLETTERS);
+		System.out.println("\tMode: " +MODE);
 		if(!NEWMETHOD)
 		{
 			System.out.println("\tWarning! Using the v1.1 scanning method! Will be /very/ slow!");
