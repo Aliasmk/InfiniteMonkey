@@ -41,7 +41,7 @@ import javax.sound.sampled.Clip;
 public class IMT {
 
     //quick preferences
-    final int PHRASES = 1000; //set maximum number of phrases. Varying this increases number of words and inherently, processing time.
+    final int PHRASES = 10000000; //set maximum number of phrases. Varying this increases number of words and inherently, processing time.
     final int MAXWORDLETTERS = 7; //set maximum number of letters per "word"
     final int MINWORDLETTERS = 2; //set maximum number of letters per "word"
     
@@ -51,7 +51,7 @@ public class IMT {
     final boolean VERBOSEWORDS = true; //specify whether or not words are displayed on screen as they are discovered. Disabling shows a Percentage completion.
 	final boolean NOPERCENT = true; //if true, when VERBOSEWORDS = false, the percentage will not be shown, instead, a spinning wheel will show to indicate activity.
 	
-	final boolean NEWMETHOD = true; //specifies whether to use the v1.1 or the v1.2 method of scanning.
+	final int SEARCHMETHOD = 1; //specifies whether to use the v1.3 (1), v1.2 (2), or v1.1 (3) method of scanning.
 	
 	final int MODE = 1; //0- Smart Method, 1- Random Non-shift Method, 2- Random Shift Method
 	
@@ -60,6 +60,7 @@ public class IMT {
     //global vars
     String[][] allWords;
 	public String[] bufferedDict;
+	int dicLines = 0;
     String inputText = "";
     String checkLine = "";
     File dictionary;
@@ -113,7 +114,7 @@ public class IMT {
 		System.out.print("Buffering Dictionary...");
 		
 		BufferedReader dbuf = new BufferedReader(new FileReader(dictionary));
-		int dicLines = 0;
+		
         //find number of lines
         while(dbuf.readLine() != null)
 		{
@@ -295,9 +296,9 @@ public class IMT {
 		System.out.println("\tMinimum Word Length: " +MINWORDLETTERS);
 		System.out.println("\tMaximum Word Length: " +MAXWORDLETTERS);
 		System.out.println("\tMode: " +MODE);
-		if(!NEWMETHOD)
+		if(SEARCHMETHOD != 1)
 		{
-			System.out.println("\tWarning! Using the v1.1 scanning method! Will be /very/ slow!");
+			System.out.println("\tWarning! Using the old scanning method! Will be /very/ slow!");
 		}
         //corresponds to maximum word length.
         double[] wordlength = new double[MAXWORDLETTERS+1];
@@ -443,14 +444,47 @@ public class IMT {
         }
         wordLogger.close();
     }
+    
+    public boolean binaryScan(String input, int min, int max)
+    {
+    	//run a binary search on the alphabetical list looking for the word.
+    	int mid = (max+min)/2;
+    	
+    	//System.out.println(bufferedDict[mid] + " <----> " + input + " ----- min: " +min + " --- max: " + max);
+    	
+    	if(min >= max || min+1 == max)
+    	{
+    		return false;
+    	}
+    	else
+    	{
+    		int comparison = input.compareTo(bufferedDict[mid]);
+    		if(comparison == 0)
+    		{
+    			return true; //Base case
+    		}
+    		else if(comparison < 0)
+    		{
+    			return binaryScan(input, min, mid);
+    		}
+    		else
+    		{
+    			return binaryScan(input, mid, max);
+    		}
+    		
+    	}
+    }
   
-    //checking the word against the master dictionary
+    //using the V1.2 and older method checking the word against the master dictionary
     public boolean checkWord(String input) throws Exception {
         
         //to hell with util.Scanner! Too slow!
-		if(NEWMETHOD == true)
+		if(SEARCHMETHOD == 1)
 		{
-	  
+			return binaryScan(input, 0, dicLines);
+		}
+		else if(SEARCHMETHOD == 2)
+		{
         boolean isWord = false;
         inputText = input.toLowerCase();
         
