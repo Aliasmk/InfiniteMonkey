@@ -41,21 +41,21 @@ import javax.sound.sampled.Clip;
 public class IMT {
 
     //quick preferences
-    final int PHRASES = 10000000; //set maximum number of phrases. Varying this increases number of words and inherently, processing time.
+    final int PHRASES = 250000; //set maximum number of phrases. Varying this increases number of words and inherently, processing time.
     final int MAXWORDLETTERS = 7; //set maximum number of letters per "word"
     final int MINWORDLETTERS = 2; //set maximum number of letters per "word"
     
 	final boolean PLAYSOUNDONFINISH = true; //play a sound on completion of processing
     
-	final boolean VERBOSEARRAY = true; //specify whether or not the randomly generated array appears on the terminal screen. Recommended: false
-    final boolean VERBOSEWORDS = true; //specify whether or not words are displayed on screen as they are discovered. Disabling shows a Percentage completion.
-	final boolean NOPERCENT = true; //if true, when VERBOSEWORDS = false, the percentage will not be shown, instead, a spinning wheel will show to indicate activity.
+	final boolean VERBOSEARRAY = false; //specify whether or not the randomly generated array appears on the terminal screen. Recommended: false
+    final boolean VERBOSEWORDS = false; //specify whether or not words are displayed on screen as they are discovered. Disabling shows a Percentage completion.
+	final boolean NOPERCENT = false; //if true, when VERBOSEWORDS = false, the percentage will not be shown, instead, a spinning wheel will show to indicate activity.
 	
 	final int SEARCHMETHOD = 1; //specifies whether to use the v1.3 (1), v1.2 (2), or v1.1 (3) method of scanning.
 	
 	final int MODE = 1; //0- Smart Method, 1- Random Non-shift Method, 2- Random Shift Method
 	
-	final String VERSION = "1.2"; //version number
+	final String VERSION = "1.3"; //version number
     
     //global vars
     String[][] allWords;
@@ -240,6 +240,7 @@ public class IMT {
         long expStart; 
 		long expElap;
 		expStart = System.nanoTime();
+        for(int i = 0; i < 10; i++){
         checkWord("apple");
 		checkWord("beta");
 		checkWord("check");
@@ -266,8 +267,8 @@ public class IMT {
 		checkWord("yak");
 		checkWord("zebra");
 		checkWord("lulzthisisntaword");
-        
-        expElap = (System.nanoTime() - expStart)/27;
+        }
+        expElap = (System.nanoTime() - expStart)/(27*10);
 		
 		
 		//System.out.println(expElap +" nanoseconds per calculation. Also, calcd total words: " +wordsToScan);
@@ -393,7 +394,7 @@ public class IMT {
                     
                     
                     
-                    wordLogger.write(allWords[row][col] + "\n");
+                    wordLogger.write(allWords[row][col] + ", ");
 
                     realWords[(int) totalWords] = allWords[row][col];
 
@@ -410,7 +411,7 @@ public class IMT {
         wordLogger.flush();
 
 
-        System.out.println("\nSearch complete. Found " + Math.round(totalWords) + " words.");
+        System.out.println("\nSearch complete. Found " + Math.round(totalWords) + " words. Total Searched: "+wordsScanned +" words.");
         System.out.println("See log files at \"" + results.getCanonicalPath() + "\" for more info.");
         System.out.println("*****************************************************************************");
 
