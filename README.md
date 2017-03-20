@@ -11,5 +11,3 @@ I have reopened this project again because I'm taking a Data Algorithms course. 
 In /bin you will find a jar file, which when run in commandline with java -jar IMT.jar will start the program. Otherwise in /src you can find the original class and java file which can be used to run from there.
 
 Please note: this program [does not simulate any physical interaction that normal monkeys may have with a typewriter](http://en.wikipedia.org/wiki/Infinite_monkey_theorem#Real_monkeys).
-
-For the time being, this work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/. Thank you.
